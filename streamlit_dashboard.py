@@ -1,60 +1,60 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 import plotly.express as px
+import os
 
-# ---- Title ----
-st.title("Customer Segmentation Dashboard 🚀")
-st.write("Built using **Streamlit**, **Pandas**, **Scikit-learn**, and **Plotly**.")
+st.set_page_config(page_title="Customer Segmentation Dashboard", layout="wide")
+st.title("📊 COBB Italy Internship Dashboard")
 
-# ---- Upload Data ----
-st.sidebar.header("Upload your CSV file")
-uploaded_file = st.sidebar.file_uploader("Choose a file", type=["csv"])
+# Sidebar: Upload or use default sample
+st.sidebar.header("Upload Data (optional)")
+uploaded = st.sidebar.file_uploader("Upload CSV file", type=["csv"])
 
-if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
-    st.write("### Preview of Uploaded Data", df.head())
-
-    # ---- Data Preprocessing ----
-    numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
-    st.sidebar.write("Numeric Columns Detected:", numeric_cols)
-
-    if len(numeric_cols) < 2:
-        st.error("Upload a CSV file with at least 2 numeric columns for clustering.")
-    else:
-        selected_cols = st.sidebar.multiselect("Select columns for clustering", numeric_cols, default=numeric_cols[:2])
-        if len(selected_cols) >= 2:
-            X = df[selected_cols].dropna()
-
-            # ---- KMeans Clustering ----
-            k = st.sidebar.slider("Select Number of Clusters", 2, 10, 3)
-            model = KMeans(n_clusters=k, random_state=42)
-            df['Cluster'] = model.fit_predict(X)
-
-            # ---- Visualization ----
-            st.write("### Clustered Data", df.head())
-            fig = px.scatter(df, x=selected_cols[0], y=selected_cols[1],
-                             color=df['Cluster'].astype(str),
-                             title="Customer Clusters",
-                             labels={"color": "Cluster"})
-            st.plotly_chart(fig)
-
-            # ---- Cluster Count Chart ----
-            cluster_counts = df['Cluster'].value_counts().sort_index()
-            st.write("### Number of Customers per Cluster")
-            fig_bar = px.bar(x=cluster_counts.index, y=cluster_counts.values,
-                             labels={'x': 'Cluster', 'y': 'Count'}, text=cluster_counts.values)
-            st.plotly_chart(fig_bar)
-
-            # ---- Optional: Download clustered data ----
-            csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button("Download Clustered Data", csv, "segmented_data.csv", "text/csv")
-
+if uploaded:
+    df = pd.read_csv(uploaded)
+    st.success("✅ Uploaded your file!")
 else:
-    st.info("👈 Upload a CSV file from the sidebar to get started.")
+    default_path = os.path.join(os.getcwd(), "sample_data.csv")
+    df = pd.read_csv(default_path)
+    st.info("Loaded default company sample data.")
 
-# ---- Footer ----
-st.markdown("---")
-st.caption("Made with ❤️ by a Data Analyst Intern using BTech CSE Core skills.")
+# Show data preview
+st.subheader("🔍 Data Preview")
+st.dataframe(df.head())
+
+# Select numeric columns for clustering
+numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
+if len(numeric_cols) < 2:
+    st.error("Need at least 2 numeric columns for clustering.")
+    st.stop()
+
+x_axis = st.sidebar.selectbox("X-axis:", numeric_cols, index=0)
+y_axis = st.sidebar.selectbox("Y-axis:", numeric_cols, index=1)
+clusters = st.sidebar.slider("Number of clusters:", 2, 10, 4)
+
+# K-Means clustering
+X = df[[x_axis, y_axis]].dropna()
+model = KMeans(n_clusters=clusters, random_state=42)
+df['Cluster'] = model.fit_predict(X)
+
+# Visualizations
+st.subheader("📈 Cluster Scatter Plot")
+scatter_fig = px.scatter(df, x=x_axis, y=y_axis, color=df['Cluster'].astype(str),
+                         title=f"{clusters} Clusters: {x_axis} vs {y_axis}",
+                         labels={'color': 'Cluster'})
+st.plotly_chart(scatter_fig, use_container_width=True)
+
+st.subheader("📊 Cluster Distribution")
+count_df = df['Cluster'].value_counts().reset_index()
+count_df.columns = ['Cluster', 'Count']
+bar_fig = px.bar(count_df, x='Cluster', y='Count', title="Records per Cluster")
+st.plotly_chart(bar_fig, use_container_width=True)
+
+st.subheader("📁 Clustered Data Sample")
+st.dataframe(df.head(10))
+
+# Download option
+csv_data = df.to_csv(index=False).encode('utf-8')
+st.download_button("⬇️ Download Clustered CSV", csv_data, file_name="clustered_data.csv")
