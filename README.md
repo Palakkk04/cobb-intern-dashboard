@@ -1,38 +1,54 @@
-# COBB Internship Data Dashboard & Customer Segmentation
+# 🎯 COBB Internship Data Dashboard & Customer Segmentation
 
-🚀 **Streamlit App** showcasing key deliverables from an 8-week Data Analyst Internship at COBB Italy (India).
+🚀 **Streamlit Web App** presenting key insights and deliverables from an 8-week Data Analyst Internship at **COBB Italy (India)**.
 
-## 🔍 Project Summary
+---
 
-This project visualizes sales trends and performs customer segmentation using K-Means clustering. Built with Python and Streamlit, it includes:
+## 🔍 Project Overview
 
-- 📊 Interactive dashboard with sales analysis (bar charts, pie charts, heatmaps)
-- 👥 Customer segmentation using K-Means
-- 📦 Automated data preprocessing pipeline
+This interactive dashboard visualizes core sales metrics and performs customer segmentation using machine learning (K-Means Clustering). Built with **Python** and **Streamlit**, the tool provides:
 
-## 📁 Files
+- 📈 Dynamic sales analysis (bar charts, pie charts, heatmaps)
+- 👥 Customer segmentation based on spending behavior
+- 🛠️ Automated data preprocessing pipeline for real-time insights
 
-- `streamlit_dashboard.py`: Main Streamlit app
-- `requirements.txt`: Dependencies
-- `README.md`: You’re reading it 😎
+---
 
-## 🌐 Live App
+## 🌐 Live Application
 
-> [🔗 Click here to launch the app](https://share.streamlit.io/yourusername/cobb-intern-dashboard/main/streamlit_dashboard.py)
+👉 **[Launch the Dashboard](https://cobb-intern-dashboard-krgftnbrk97cz6whvlqxen.streamlit.app/)**  
+Hosted on Streamlit Cloud — no setup needed. Just open and explore.
 
-> Replace `yourusername` with your actual GitHub username once deployed.
+---
 
 ## 🧠 Tech Stack
 
-- Python (Pandas, NumPy, Scikit-learn)
-- Streamlit
-- Plotly
+- **Language:** Python  
+- **Libraries:** Pandas, NumPy, Plotly, Scikit-learn  
+- **Framework:** Streamlit  
+- **Deployment:** Streamlit Cloud  
+- **Clustering Algorithm:** K-Means
 
-## ✨ Features
+---
 
-- Sidebar filters for year and segment
-- Real-time charts and graphs
-- Customer grouping based on features like Age, Annual Income, and Spending Score
+## ✨ Key Features
+
+- ✅ Sidebar filters for year-wise and customer segment selection
+- 📊 Real-time charts (interactive & responsive)
+- 👥 Customer clustering based on:
+  - Age  
+  - Annual Income  
+  - Spending Score  
+- ⚙️ Backend pipeline for preprocessing CSV inputs
+
+---
+
+## 🗂️ Repository Structure
+📁 cobb-intern-dashboard/
+├── streamlit_dashboard.py       # 🚀 Main Streamlit app file
+├── sample_customer_data.csv     # 🧪 Sample data auto-loaded in the app
+├── requirements.txt             # 📦 All Python dependencies
+├── README.md                    # 📘 Project overview and usage guide
 
 ## 📌 How to Run Locally
 
